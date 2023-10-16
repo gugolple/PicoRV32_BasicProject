@@ -1,4 +1,4 @@
-TOOLCHAIN_PREFIX = riscv32-unknown-elf-
+TOOLCHAIN_PREFIX = /opt/riscv/bin/riscv32-unknown-elf-
 
 firmware.hex: firmware.S firmware.c firmware.lds
 	$(TOOLCHAIN_PREFIX)gcc -Os -ffreestanding -nostdlib -o firmware.elf firmware.S firmware.c \
