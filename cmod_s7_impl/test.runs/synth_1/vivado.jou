@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Sun Mar 19 11:39:27 2023
+# Process ID: 86895
+# Current directory: /home/gugo/XilinxProjects/test/test.runs/synth_1
+# Command line: vivado -log test.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source test.tcl
+# Log file: /home/gugo/XilinxProjects/test/test.runs/synth_1/test.vds
+# Journal file: /home/gugo/XilinxProjects/test/test.runs/synth_1/vivado.jou
+# Running On: thwomp, OS: Linux, CPU Frequency: 2095.802 MHz, CPU Physical cores: 16, Host memory: 33506 MB
+#-----------------------------------------------------------
+source test.tcl -notrace
