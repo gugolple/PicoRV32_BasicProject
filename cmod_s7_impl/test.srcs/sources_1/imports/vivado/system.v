@@ -7,9 +7,6 @@ module system (
 	output reg [7:0] out_byte,
 	output reg       out_byte_en
 );
-	// set this to 0 for better timing but less performance/MHz
-	parameter FAST_MEMORY = 1;
-
 	// 4096 32bit words = 16kB memory
 	parameter MEM_SIZE = 4096;
 
