@@ -13,6 +13,7 @@ Learn as much as possible!
 ###New goals!!!!
 Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
     I understand that this DOES NOT imply proper debugging, that would be through GDB.
+Migrate to autotools for the software compilation.
 After serial I will focus on GDB debugging included into the system.
 
 ##Completed goals!
