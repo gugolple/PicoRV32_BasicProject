@@ -1,6 +1,8 @@
+volatile char * const OUTPUT_REG = (volatile char *)0x10000000;
+
 void putc(char c)
 {
-	*(volatile char*)0x10000000 = c;
+	*OUTPUT_REG = c;
 }
 
 void puts(const char *s)
@@ -21,6 +23,11 @@ void main()
 {
 	char message[] = "$Uryyb+Jbeyq!+Vs+lbh+pna+ernq+guvf+zrffntr+gura$gur+CvpbEI32+PCH"
 			"+frrzf+gb+or+jbexvat+whfg+svar.$$++++++++++++++++GRFG+CNFFRQ!$$";
+	putc(0xFF);
+	putc(0x00);
+	putc(0xAA);
+	putc(0x55);
+	putc(0x00);
 	for (int i = 0; message[i]; i++)
 		switch (message[i])
 		{
