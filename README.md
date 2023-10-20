@@ -31,3 +31,5 @@ All the specifics regarding the board [cmod S7](https://digilent.com/reference/p
 #Links
 Picorv32: https://github.com/YosysHQ/picorv32
 Cmod S7: https://digilent.com/reference/programmable-logic/cmod-s7/start
+Verilog formatter: https://github.com/chipsalliance/verible
+
