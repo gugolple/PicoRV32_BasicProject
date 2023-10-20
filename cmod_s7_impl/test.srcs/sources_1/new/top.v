@@ -35,9 +35,7 @@ module Clock_divider (
   always @(posedge clock_in) begin
     counter <= counter + 28'd1;
     if (counter >= (DIVISOR - 1)) counter <= 28'd0;
-
     clock_out <= (counter < DIVISOR / 2) ? 1'b1 : 1'b0;
-
   end
 endmodule
 
@@ -59,7 +57,6 @@ module top (
 
   wire [7:0] myreg;
   wire out_en;
-
   system m_system (
       .clk(clock_out),
       .resetn(!btn[0]),
