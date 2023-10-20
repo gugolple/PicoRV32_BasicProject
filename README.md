@@ -13,6 +13,7 @@ Learn as much as possible!
 ###New goals!!!!
 Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
     I understand that this DOES NOT imply proper debugging, that would be through GDB.
+    Serial decided for the time being to be provided by: [jakubcabal/uart-for-fpga](https://github.com/jakubcabal/uart-for-fpga.git)
 Migrate to autotools for the software compilation.
 After serial I will focus on GDB debugging included into the system.
 
@@ -25,11 +26,11 @@ I want the soft core to be programmed via C/C++ and the FOSS toolchain.
     Needed to compile from source to have all libraries be in RV32I configuration.
 
 #Aknowledgments
-Absolutely to the [picorv32](https://github.com/YosysHQ/picorv32) proyect, from which all the code is based on.
+    Absolutely to the [picorv32](https://github.com/YosysHQ/picorv32) proyect, from which the main code is based on.
 All the specifics regarding the board [cmod S7](https://digilent.com/reference/programmable-logic/cmod-s7/start).
 
 #Links
 Picorv32: https://github.com/YosysHQ/picorv32
 Cmod S7: https://digilent.com/reference/programmable-logic/cmod-s7/start
 Verilog formatter: https://github.com/chipsalliance/verible
-
+Serial for FPGA: https://github.com/jakubcabal/uart-for-fpga.git
