@@ -42,8 +42,35 @@ endmodule
 module top (
     input clk,
     input [1:0] btn,
-    output [3:0] led
+    output [3:0] led,
+    input uart_rx,
+    output uart_tx
 );
+  // INTO THE UART, SO OUT FOR US
+  wire [7:0] dout_uart;
+  wire dout_vld;
+  wire dout_rdy;
+  // FROM THE UART, SO IN FOR US
+  wire [7:0] din_uart;
+  wire din_vld;
+  
+  uart #(
+      .CLK_FREQ(12_000_000)
+  )  uart1 (
+      // Basic
+      .clk (clk),
+      .rst (0),
+      // Ports
+      .uart_txd (uart_tx),
+      .uart_rxd (uart_rx),
+      // Input
+      .din(dout_uart),
+      .din_vld(dout_vld),
+      .din_rdy(dout_rdy),
+      // Output
+      .dout(din_uart),
+      .dout_vld(din_vld)
+  );
 
   wire clock_out;
   // Instantiate the Unit Under Test (UUT)
@@ -62,7 +89,14 @@ module top (
       .resetn(!btn[0]),
       //.trap (led[3]),
       .out_byte(myreg),
-      .out_byte_en(out_en)
+      .out_byte_en(out_en),
+      // Output
+      .uart_dout(dout_uart),
+      .uart_dout_vld(dout_vld),
+      .uart_dout_rdy(dout_rdy),
+      // Input
+      .uart_din(din_uart),
+      .uart_din_vld(din_vld)
   );
 
   assign led[3:0] = myreg[3:0];
