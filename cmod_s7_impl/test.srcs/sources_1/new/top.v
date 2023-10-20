@@ -55,11 +55,12 @@ module top (
   wire din_vld;
   
   uart #(
-      .CLK_FREQ(12_000_000)
+      .CLK_FREQ(12_000_000),
+      .BAUD_RATE(115200)
   )  uart1 (
       // Basic
       .clk (clk),
-      .rst (0),
+      .rst (!btn[0]),
       // Ports
       .uart_txd (uart_tx),
       .uart_rxd (uart_rx),

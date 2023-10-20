@@ -59,7 +59,7 @@ module system (
 	generate
 	   begin
 		always @(posedge clk) begin
-		    if (uart_dout_vld && transmit_uart && !uart_dout_rdy) begin
+		    if (uart_dout_vld && transmit_uart && uart_dout_rdy) begin
 		        transmit_uart <= 0;
 		        uart_dout_vld <= 0;
 		    end
@@ -83,7 +83,7 @@ module system (
 			// UART OUT!
 			if (mem_la_write && mem_la_addr == 32'h1000_0001) begin
 				if (mem_la_wstrb[0]) begin
-				    uart_dout[ 7: 0] <= mem_la_wdata[ 7: 0];
+				    uart_dout[ 7: 0] <= mem_la_wdata[ 31: 24];
 				    transmit_uart <= 1;
 				end
 			end
