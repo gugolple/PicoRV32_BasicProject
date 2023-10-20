@@ -1,8 +1,19 @@
-volatile char * const OUTPUT_REG = (volatile char *)0x10000000;
+//volatile char * OUTPUT_REG = (volatile char *)0x10000000;
+#define OUTPUT_REG (*((volatile char *)0x10000000))
+//volatile char * SERIAL_REG = (volatile char *)0x10000001;
+#define SERIAL_REG (*((volatile char *)0x10000001))
+
+static char SERIAL_OUT = 1;
 
 void putc(char c)
 {
-	*OUTPUT_REG = c;
+	OUTPUT_REG = c;
+	// Implementation detail of current UART
+	// when reading the 10th bit of the register
+	// gives the status of the OUTPUT going buffer.
+//	while(!((SERIAL_REG) & 1<<9)) {
+		(SERIAL_REG) = c;
+//	}
 }
 
 void puts(const char *s)
