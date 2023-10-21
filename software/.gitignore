@@ -2,3 +2,4 @@ firmware.bin
 firmware.elf
 firmware.hex
 firmware.map
+firmware.s
