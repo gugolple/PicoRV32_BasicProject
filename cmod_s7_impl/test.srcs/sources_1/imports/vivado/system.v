@@ -92,7 +92,7 @@ module system (
 				end
 			end
 			// UART IN!
-			if (!mem_la_write && mem_la_addr == 32'h1000_0100) begin
+			if (!mem_la_write && mem_la_addr == 32'h1000_0004) begin
 			    mem_rdata[ 7: 0] <= uart_din[ 7: 0];
 				mem_rdata[ 8] <= uart_din_vld;
 				mem_rdata[ 9] <= uart_dout_rdy;

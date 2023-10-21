@@ -108,6 +108,10 @@ module top (
   //Rising edge detector stores
   reg uart_dout_ctr_dly;
   reg dout_rdy_dly;
+  // Rising edge detector logic
+  assign uart_dout_ctr_pos = uart_dout_ctr && !uart_dout_ctr_dly;
+  assign dout_rdy_neg = !dout_rdy && dout_rdy_dly;
+  // Single triggering of UART communication logic.
   always @(posedge clk) begin
     // Rising edge detector delayers  
     uart_dout_ctr_dly <= uart_dout_ctr;
@@ -124,14 +128,12 @@ module top (
         dout_vld <= 0;
     end
   end
-  // Rising edge detector logic
-  assign uart_dout_ctr_pos = uart_dout_ctr && !uart_dout_ctr_dly;
-  assign dout_rdy_neg = !dout_rdy && dout_rdy_dly;
-
+  
+  
   assign led[3:0] = myreg[3:0];
   
   // Make color leds flash when writting to SERIAL
-  assign led0_b = dout_uart[0];
-  assign led0_g = dout_uart[1];
-  assign led0_r = dout_uart[2];
+  assign led0_b = dout_rdy;
+  assign led0_g = dout_rdy;
+  assign led0_r = dout_rdy;
 endmodule
