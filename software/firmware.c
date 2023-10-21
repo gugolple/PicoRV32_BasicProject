@@ -8,10 +8,10 @@ void putc(char c)
 	OUTPUT_REG = c;
 	// Implementation detail of current UART
 	// when reading the 10th bit of the register
-	// gives the status of the OUTPUT going buffer.
-	while(!((SERIAL_REG) & 1<<9)) {
-		(SERIAL_REG) = c;
-	}
+	// gives the BSY status of the OUTPUT going buffer.
+	while(SERIAL_REG & 0x20);
+	// When no longer busy, we write to SERIAL.
+	SERIAL_REG = c;
 }
 
 void puts(const char *s)
