@@ -14,6 +14,11 @@ Learn as much as possible!
 Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
     I understand that this DOES NOT imply proper debugging, that would be through GDB.
     Serial decided for the time being to be provided by: [jakubcabal/uart-for-fpga](https://github.com/jakubcabal/uart-for-fpga.git)
+
+Produce a better system for understanding the status of the serial by the CPU.
+    In this I mean to have a BUSY flag or similar, where it will be set HIGH 
+    while DIN_VLD is HIGH and DIN_RDY is HIGH, going LOW when DIN_RDY goes LOW.
+
 Migrate to autotools for the software compilation.
 After serial I will focus on GDB debugging included into the system.
 
@@ -24,6 +29,9 @@ I want to have a simple program to blink the leds in the board using the soft co
 I want the soft core to be programmed via C/C++ and the FOSS toolchain.
     Managed to cross compile from my ARM system, very happy about that one.
     Needed to compile from source to have all libraries be in RV32I configuration.
+
+Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
+    This is now working with the example code of the PicoRV32 project. TAG: "WorkingSerial".
 
 #Aknowledgments
     Absolutely to the [picorv32](https://github.com/YosysHQ/picorv32) proyect, from which the main code is based on.
