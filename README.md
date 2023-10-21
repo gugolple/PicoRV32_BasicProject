@@ -31,6 +31,7 @@ I want the soft core to be programmed via C/C++ and the FOSS toolchain.
     Needed to compile from source to have all libraries be in RV32I configuration.
 
 Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
+    Currently is only sending data from PicoRV32 to the outside system.
     This is now working with the example code of the PicoRV32 project. TAG: "WorkingSerial".
 
 #Aknowledgments
