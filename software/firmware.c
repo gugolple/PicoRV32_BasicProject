@@ -1,9 +1,7 @@
-//volatile char * OUTPUT_REG = (volatile char *)0x10000000;
+//volatile char * OUTPUT_REG = (volatile char *)0x10000000
 #define OUTPUT_REG (*((volatile char *)0x10000000))
-//volatile char * SERIAL_REG = (volatile char *)0x10000001;
-#define SERIAL_REG (*((volatile char *)0x10000001))
-
-static char SERIAL_OUT = 1;
+//volatile char * SERIAL_REG = (volatile char *)0x10000004;
+#define SERIAL_REG (*((volatile char *)0x10000004))
 
 void putc(char c)
 {
@@ -11,9 +9,9 @@ void putc(char c)
 	// Implementation detail of current UART
 	// when reading the 10th bit of the register
 	// gives the status of the OUTPUT going buffer.
-//	while(!((SERIAL_REG) & 1<<9)) {
+	while(!((SERIAL_REG) & 1<<9)) {
 		(SERIAL_REG) = c;
-//	}
+	}
 }
 
 void puts(const char *s)
@@ -34,11 +32,7 @@ void main()
 {
 	char message[] = "$Uryyb+Jbeyq!+Vs+lbh+pna+ernq+guvf+zrffntr+gura$gur+CvpbEI32+PCH"
 			"+frrzf+gb+or+jbexvat+whfg+svar.$$++++++++++++++++GRFG+CNFFRQ!$$";
-	putc(0xFF);
-	putc(0x00);
-	putc(0xAA);
-	putc(0x55);
-	putc(0x00);
+	puts("\r\n");
 	for (int i = 0; message[i]; i++)
 		switch (message[i])
 		{
@@ -58,4 +52,5 @@ void main()
 			break;
 		}
 	puts(message);
+	puts("\r\n");
 }
