@@ -12,9 +12,12 @@ module system (
 	input            uart_dout_rdy,
 	// UART IN
 	input [7:0]      uart_din,
-	input            uart_din_vld
+	input            uart_din_vld,
+	// IRQ
+	input [31:0]     irq,
+	output [31:0]    eoi
 );
-	// 4096 32bit words = 16kB memory
+	// 4096 32bit words = 32kB memory
 	parameter MEM_SIZE = 4096;
 
 	wire mem_valid;
@@ -31,7 +34,12 @@ module system (
 	wire [31:0] mem_la_wdata;
 	wire [3:0] mem_la_wstrb;
 
-	picorv32 picorv32_core (
+	picorv32
+	   #( .ENABLE_IRQ(1),
+	   // Set stack address location, now 0 + MEM_SIZE -1
+	      .STACKADDR(MEM_SIZE * 32 / 4 -1)
+       ) 
+	   picorv32_core (
 		.clk         (clk         ),
 		.resetn      (resetn      ),
 		.trap        (trap        ),
@@ -46,7 +54,9 @@ module system (
 		.mem_la_write(mem_la_write),
 		.mem_la_addr (mem_la_addr ),
 		.mem_la_wdata(mem_la_wdata),
-		.mem_la_wstrb(mem_la_wstrb)
+		.mem_la_wstrb(mem_la_wstrb),
+		.irq         (irq),
+		.eoi         (eoi)
 	);
     
     // Request the memmory block

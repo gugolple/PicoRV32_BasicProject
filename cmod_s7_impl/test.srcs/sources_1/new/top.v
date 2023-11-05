@@ -56,7 +56,7 @@ module top (
   // FROM THE UART, SO IN FOR US
   wire [7:0] din_uart;
   wire din_vld;
-  
+  `define IRQ_UART 4
   uart #(
       .CLK_FREQ(12_000_000),
       .BAUD_RATE(115200)
@@ -85,11 +85,13 @@ module top (
       .clock_in (clk),
       .clock_out(clock_out)
   );
+  
 
   wire [7:0] myreg;
   wire out_en;
-  
   wire uart_dout_ctr;
+  wire [31:0] irq;
+  wire [31:0] eoi;
   system m_system (
       .clk(clock_out),
       .resetn(!btn[0]),
@@ -102,7 +104,10 @@ module top (
       .uart_dout_rdy(dout_rdy),
       // Input
       .uart_din(din_uart),
-      .uart_din_vld(din_vld)
+      .uart_din_vld(din_vld),
+      // IRQ
+	  .irq         (irq),
+      .eoi         (eoi)
   );
   
   //Rising edge detector stores
@@ -130,10 +135,28 @@ module top (
   end
   
   
-  assign led[3:0] = myreg[3:0];
+  // This module shall be at least 1 CPU clock cycle high to assert the IRQ
+  // Rising edge detector and keeper, for the UART reception to comply with IRQ
+  reg uart_datain_interruption_ctr;
+  always @(posedge clk) begin
+    // Will trigger when data is received
+    if (din_vld) begin
+        uart_datain_interruption_ctr <= 1; 
+    // Will wait until the EOI flag associated with IRQ gets set to high
+    end else if (eoi[`IRQ_UART]) begin
+        uart_datain_interruption_ctr <= 0;
+    end
+  end
+  
+  assign irq[31:`IRQ_UART+1] = {1'b0};
+  assign irq[`IRQ_UART] = uart_datain_interruption_ctr;
+  assign irq[`IRQ_UART-1:0] = {1'b0};
+  
+  
+  assign led[3:0] = {din_vld, dout_vld, uart_datain_interruption_ctr, {1{1'b0}}};
   
   // Make color leds flash when writting to SERIAL
-  assign led0_b = dout_rdy;
-  assign led0_g = dout_rdy;
-  assign led0_r = dout_rdy;
+  assign led0_b = 1'b1;
+  assign led0_g = 1'b1;
+  assign led0_r = 1'b1;
 endmodule
