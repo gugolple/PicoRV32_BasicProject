@@ -37,7 +37,7 @@ module system (
 	picorv32
 	   #( .ENABLE_IRQ(1),
 	   // Set stack address location, now 0 + MEM_SIZE -1
-	      .STACKADDR(MEM_SIZE * 32 / 4 -1)
+	      .STACKADDR(MEM_SIZE * 32 / 4)
        ) 
 	   picorv32_core (
 		.clk         (clk         ),

@@ -134,6 +134,9 @@ module top (
     end
   end
   
+  // Counter of CPU instructions, to keep the interrupt HIGH!
+  always @(posedge clock_out) begin
+  end
   
   // This module shall be at least 1 CPU clock cycle high to assert the IRQ
   // Rising edge detector and keeper, for the UART reception to comply with IRQ
