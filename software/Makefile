@@ -1,12 +1,17 @@
 TOOLCHAIN_PREFIX = /opt/riscv/bin/riscv32-unknown-elf-
-CC_FLAGS = -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostdlib --std=gnu99
+CC_FLAGS = -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostdlib --std=gnu99 
 
-firmware.hex: firmware.S firmware.c firmware.lds
-	$(TOOLCHAIN_PREFIX)gcc $(CC_FLAGS) -o firmware.elf firmware.S firmware.c \
+firmware.hex: firmware.S firmware.c firmware.lds custom_ops.S
+	$(TOOLCHAIN_PREFIX)gcc $(CC_FLAGS) -o firmware.elf firmware.S custom_ops.S firmware.c \
 		 -Wl,-Bstatic,-T,firmware.lds,-Map,firmware.map,--strip-debug -lgcc
 	$(TOOLCHAIN_PREFIX)gcc $(CC_FLAGS) -S -fverbose-asm firmware.c
 	$(TOOLCHAIN_PREFIX)objcopy -O binary firmware.elf firmware.bin
 	python3 makehex.py firmware.bin 4096 > firmware.hex
+
+firmware.asm: firmware.hex
+	$(TOOLCHAIN_PREFIX)objdump -drwC -S firmware.elf > firmware.asm
+
+all: firmware.asm firmware.hex
 
 clean:
 	rm -rf firmware.bin firmware.elf firmware.hex firmware.map firmware.s
