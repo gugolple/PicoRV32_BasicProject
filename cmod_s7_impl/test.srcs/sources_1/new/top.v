@@ -80,7 +80,7 @@ module top (
   // Instantiate the Unit Under Test (UUT)
   // Test the clock divider in Verilog
   Clock_divider #(
-      .DIVISOR(12_000)
+      .DIVISOR(12)
   ) uut (
       .clock_in (clk),
       .clock_out(clock_out)
