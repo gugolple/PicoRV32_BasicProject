@@ -6,7 +6,9 @@
 .section .init
 reset_vec:
 	// no more than 16 bytes here !
-	picorv32_waitirq_insn(zero) //This instruction waits until an interrupt gets generated
+        // Uncomment next line to make the CPU wait until an IRQ. This could be
+        // useful if you need to wait for CLK setup time.
+	//picorv32_waitirq_insn(zero) //This instruction waits until an interrupt gets generated
 	picorv32_maskirq_insn(zero, zero)
 	
 	/* goto extended initialization vector */

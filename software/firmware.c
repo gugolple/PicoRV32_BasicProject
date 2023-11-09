@@ -112,12 +112,8 @@ uint32_t *irq(uint32_t *regs, uint32_t irqs)
 		ext_irq_4_count++;
 		puts("[EXT-IRQ-4] Serial: ");
                 uint32_t serial_tmp;
-                do {
-                    serial_tmp = *SERIAL_REG;
-                    // Only print the actual char of serial, not the extra data
-		    putd(serial_tmp & SERIAL_IN_DATA);
-                    putc(' ');
-                } while (serial_tmp & SERIAL_IN_MORE_DATA);
+                serial_tmp = *SERIAL_REG;
+                putd(serial_tmp & SERIAL_IN_DATA);
 	}
 
 	if ((irqs & (1<<5)) != 0) {
