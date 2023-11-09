@@ -6,6 +6,7 @@ module system (
 	output           trap,
 	output reg [7:0] out_byte,
 	output reg       out_byte_en,
+	output reg       external_read,
 	// Output
 	output reg [7:0] uart_dout,
 	output reg       uart_dout_ctr,
@@ -89,6 +90,7 @@ module system (
                 end
             end
 	
+	        // Block solving special registers
             always @(posedge clk) begin
                 mem_ready <= 1;
                 // Basic output register
@@ -97,6 +99,12 @@ module system (
                     out_byte <= mem_la_wdata;
                 // UART REG!
                 end else if (mem_la_addr == 32'h1000_0004) begin
+                    // Activate external read flag
+                    if (mem_la_read) begin
+                        external_read <= 1;
+                    end else begin
+                        external_read <= 0;
+                    end
                     // UART OUT!
                     if (mem_la_write) begin
                         if (mem_la_wstrb[0] && uart_dout_ctr == 0) begin

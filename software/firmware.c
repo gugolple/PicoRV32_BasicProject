@@ -2,19 +2,23 @@
 #include <stdbool.h>
 
 //volatile char * OUTPUT_REG = (volatile char *)0x10000000
-#define OUTPUT_REG (*((volatile char *)0x10000000))
+volatile uint32_t * const OUTPUT_REG = ((volatile uint32_t *)0x10000000);
 //volatile char * SERIAL_REG = (volatile char *)0x10000004;
-#define SERIAL_REG (*((volatile char *)0x10000004))
+volatile uint32_t * const SERIAL_REG = ((volatile uint32_t *)0x10000004);
+// Sub register division for SERIAL control
+uint32_t const SERIAL_OUT_BSY = 0x200;
+uint32_t const SERIAL_IN_MORE_DATA = 0x100;
+uint32_t const SERIAL_IN_DATA = 0x0FF;
 
 void putc(char c)
 {
-	OUTPUT_REG = c;
+	*OUTPUT_REG = c;
 	// Implementation detail of current UART
 	// when reading the 10th bit of the register
 	// gives the BSY status of the OUTPUT going buffer.
-	while(SERIAL_REG & 0x20);
+	while(!(*SERIAL_REG & SERIAL_OUT_BSY));
 	// When no longer busy, we write to SERIAL.
-	SERIAL_REG = c;
+	*SERIAL_REG = c;
 }
 
 void puts(const char *s)
@@ -51,7 +55,7 @@ void *memcpy(void *dest, const void *src, int n)
 }
 
 void my_sleep_ms(unsigned int ms) {
-  #define STEPS_PER_SEC 1000
+  #define STEPS_PER_SEC 10000
   unsigned int i,s;
   for (s=0; s < ms; s++) {
     for (i=0; i < STEPS_PER_SEC; i++) {
@@ -107,7 +111,13 @@ uint32_t *irq(uint32_t *regs, uint32_t irqs)
 	if ((irqs & (1<<4)) != 0) {
 		ext_irq_4_count++;
 		puts("[EXT-IRQ-4] Serial: ");
-		putc(SERIAL_REG & 0xFF);
+                uint32_t serial_tmp;
+                do {
+                    serial_tmp = *SERIAL_REG;
+                    // Only print the actual char of serial, not the extra data
+		    putd(serial_tmp & SERIAL_IN_DATA);
+                    putc(' ');
+                } while (serial_tmp & SERIAL_IN_MORE_DATA);
 	}
 
 	if ((irqs & (1<<5)) != 0) {
