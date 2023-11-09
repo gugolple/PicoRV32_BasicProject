@@ -37,6 +37,8 @@ Have the picorv32 communicate via SERIAL/UART and handle the reception via IRQ.
     The code is a bit bulkier, there is a buffer in the UART of 8 words deep,
     configurable by the user. In another update I will try to remove the buffer.
     TAG: "WorkinSerialIRQ".
+    Redone in a simplified logic in TAG: "WorkingSerialIRQSimplified". This follows 
+    more closely to the intentions of this GIT/proyect.
 
 Produce a better system for understanding the status of the serial by the CPU.
     This has been accomplished, it was already given by DIN_RDY if it was kept high. TAG: "WorkingSerialWait".
