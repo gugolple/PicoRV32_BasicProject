@@ -10,6 +10,10 @@ uint32_t const SERIAL_OUT_BSY = 0x200;
 uint32_t const SERIAL_IN_MORE_DATA = 0x100;
 uint32_t const SERIAL_IN_DATA = 0x0FF;
 
+#define BUFFER_SIZE 100
+static char serial_buffer[BUFFER_SIZE];
+static uint32_t serial_buffer_idx;
+
 void putc(char c)
 {
 	*OUTPUT_REG = c;
@@ -93,40 +97,38 @@ void main()
 	puts("\r\n");
 
 	while(1) {
-		my_sleep_ms(10);
-		puts("Alive!\r\n");
+                // If we capture new line
+                if (serial_buffer_idx >= BUFFER_SIZE ||
+                        serial_buffer[serial_buffer_idx-1] == '\r') {
+                    // We set the end of the string
+                    serial_buffer[serial_buffer_idx] = '\0';
+                    puts(serial_buffer);
+                    putc('\n');
+                    serial_buffer_idx = 0;
+                }
 	}
 }
 
 uint32_t *irq(uint32_t *regs, uint32_t irqs)
 {
-	static unsigned int ext_irq_4_count = 0;
 	static unsigned int ext_irq_5_count = 0;
 	static unsigned int timer_irq_count = 0;
 
-	puts("Irq called: ");
-	puth(irqs, 8);
-	puts("\r\n");
-
 	if ((irqs & (1<<4)) != 0) {
-		ext_irq_4_count++;
-		puts("[EXT-IRQ-4] Serial: ");
                 uint32_t serial_tmp;
                 serial_tmp = *SERIAL_REG;
-                putd(serial_tmp & SERIAL_IN_DATA);
+                serial_buffer[serial_buffer_idx++] = serial_tmp & SERIAL_IN_DATA;
 	}
 
 	if ((irqs & (1<<5)) != 0) {
 		ext_irq_5_count++;
-		puts("[EXT-IRQ-5]");
+		puts("[EXT-IRQ-5]\r\n");
 	}
 
 	if ((irqs & 1) != 0) {
 		timer_irq_count++;
-		puts("[TIMER-IRQ]");
+		puts("[TIMER-IRQ]\r\n");
 	}
-
-	puts("\r\n");
 
 	return regs;
 }
