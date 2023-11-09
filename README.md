@@ -15,6 +15,9 @@ Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic 
     I understand that this DOES NOT imply proper debugging, that would be through GDB.
     Serial decided for the time being to be provided by: [jakubcabal/uart-for-fpga](https://github.com/jakubcabal/uart-for-fpga.git)
 
+Have the picorv32 communicate via SERIAL/UART and handle the reception via IRQ.
+    This is a basis to handle all other kind of IO to not require POLLING.
+
 Migrate to autotools for the software compilation.
 After serial I will focus on GDB debugging included into the system.
 
@@ -29,6 +32,11 @@ I want the soft core to be programmed via C/C++ and the FOSS toolchain.
 Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
     Currently is only sending data from PicoRV32 to the outside system.
     This is now working with the example code of the PicoRV32 project. TAG: "WorkingSerial".
+
+Have the picorv32 communicate via SERIAL/UART and handle the reception via IRQ.
+    The code is a bit bulkier, there is a buffer in the UART of 8 words deep,
+    configurable by the user. In another update I will try to remove the buffer.
+    TAG: "WorkinSerialIRQ".
 
 Produce a better system for understanding the status of the serial by the CPU.
     This has been accomplished, it was already given by DIN_RDY if it was kept high. TAG: "WorkingSerialWait".
