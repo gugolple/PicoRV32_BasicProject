@@ -1,4 +1,4 @@
-TOOLCHAIN_PREFIX = /opt/riscv/bin/riscv32-unknown-elf-
+TOOLCHAIN_PREFIX = riscv32-unknown-elf-
 CC_FLAGS = -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostdlib --std=gnu99
 
 default: firmware.hex

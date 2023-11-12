@@ -1,0 +1,8 @@
+firmware.bin
+firmware.elf
+firmware.hex
+firmware.map
+firmware.asm
+firmware.coe
+firmware.s
+build/
