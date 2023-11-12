@@ -4,6 +4,9 @@ This folder contains everything related to the software compilation process.
 
 This project is built using **AUTOTOOLS**!.
 
+The proyect is currently unable to work as a native application simulating the
+embedded behaviour. This will change in the future.
+
 Default setup of AUTOTOOLS commands are as follows:
     mkdir build
     cd build
