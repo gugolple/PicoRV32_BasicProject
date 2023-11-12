@@ -40,6 +40,13 @@ Have the picorv32 communicate via SERIAL/UART and handle the reception via IRQ.
     Redone in a simplified logic in TAG: "WorkingSerialIRQSimplified". This follows 
     more closely to the intentions of this GIT/proyect.
 
+Migration to autotools for software compilation done!
+    This has a new README.md in software explaining high level functionality.
+    The core has been solved, allowing anyone take the files and just change
+    their source code specific needs. It has all the configuration and files
+    needed for this project linked.
+    TAG: "WorkingAutotools"
+
 Produce a better system for understanding the status of the serial by the CPU.
     This has been accomplished, it was already given by DIN_RDY if it was kept high. TAG: "WorkingSerialWait".
 
