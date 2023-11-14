@@ -42,11 +42,11 @@ firmware.asm: firmware
 .o.asm:
 	$(host_alias)-objdump -drwC -S $< > $@
 
-# This creates the assembly objdump of all object files!
-assemblies: $(firmware_OBJECTS:.o=.asm)
-
 # Add extra targets to allow default compilation create them
 all-local: firmware.hex
+
+# Added a target for all debug related necessities
+debug: $(firmware_OBJECTS:.o=.asm) firmware.asm
 
 # Add also cleanup of extra targets
 clean-local:

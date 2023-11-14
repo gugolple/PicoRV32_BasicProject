@@ -958,11 +958,11 @@ uninstall-am: uninstall-binPROGRAMS uninstall-dist_docDATA
 @HOST_RISCV_TRUE@.o.asm:
 @HOST_RISCV_TRUE@	$(host_alias)-objdump -drwC -S $< > $@
 
-# This creates the assembly objdump of all object files!
-@HOST_RISCV_TRUE@assemblies: $(firmware_OBJECTS:.o=.asm)
-
 # Add extra targets to allow default compilation create them
 @HOST_RISCV_TRUE@all-local: firmware.hex
+
+# Added a target for all debug related necessities
+@HOST_RISCV_TRUE@debug: $(firmware_OBJECTS:.o=.asm) firmware.asm
 
 # Add also cleanup of extra targets
 @HOST_RISCV_TRUE@clean-local:
