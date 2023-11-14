@@ -36,6 +36,11 @@ The following outputs are utilized for the image building process:
 The following files are related to the building process:
 - Makefile.am: This contains all the build instructions and definitions.
   - This also handles the logic of native/embedded builds.
+  - Now it does automatically the objdump of all the sources for better
+    debugging experience with "make assemblies". If only desired from a single
+    intermediate C object file it is through "make path/to/target.**asm**"
+    instead of the usual ".o" extension. This command will compile and dump the
+    file in question.
 - configure.ac: This defines the environment variables needed by Makefile.am.
 
 The following outputs are for help to the user:
