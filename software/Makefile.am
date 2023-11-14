@@ -44,7 +44,6 @@ all-local: firmware.hex firmware.asm
 
 # Add also cleanup of extra targets
 clean-local:
-	pwd
 	rm -f $(firmware_OBJECTS:.o=.asm)
 	rm -f firmware.bin firmware.hex firmware.coe firmware.asm firmware.map
 

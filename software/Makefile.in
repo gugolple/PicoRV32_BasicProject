@@ -965,7 +965,6 @@ uninstall-am: uninstall-binPROGRAMS uninstall-dist_docDATA
 
 # Add also cleanup of extra targets
 @HOST_RISCV_TRUE@clean-local:
-@HOST_RISCV_TRUE@	pwd
 @HOST_RISCV_TRUE@	rm -f $(firmware_OBJECTS:.o=.asm)
 @HOST_RISCV_TRUE@	rm -f firmware.bin firmware.hex firmware.coe firmware.asm firmware.map
 
