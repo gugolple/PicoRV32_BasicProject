@@ -10,7 +10,7 @@ if HOST_RISCV
 
 # Full specific flags when cross compiling
 firmware_CFLAGS += -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
-firmware_CCASFLAGS = $(AM_CFLAGS) -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
+firmware_CCASFLAGS = $(firmware_CFLAGS)
 
 # Only special mapping when cross compiling
 firmware_LDFLAGS = -Wl,-Bstatic,-T,$(top_srcdir)/src/firmware.lds,-Map=firmware.map,--strip-debug,-lgcc
