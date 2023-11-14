@@ -12,6 +12,8 @@ if HOST_RISCV
 firmware_CFLAGS += -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
 firmware_CCASFLAGS = $(firmware_CFLAGS)
 
+# Has to be done with -Wl because it is using the linker through GCC, not
+# calling linker directly
 # Only special mapping when cross compiling
 firmware_LDFLAGS = -Wl,-Bstatic,-T,$(top_srcdir)/src/firmware.lds,-Map=firmware.map,--strip-debug,-lgcc
 
@@ -53,6 +55,4 @@ else
 
 endif
 
-# Has to be done with -Wl because it is using the linker through GCC, not
-# calling linker directly
 dist_doc_DATA = README.md
