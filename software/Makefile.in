@@ -93,7 +93,7 @@ bin_PROGRAMS = firmware$(EXEEXT)
 
 # Full specific flags when cross compiling
 @HOST_RISCV_TRUE@am__append_1 = -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
-#
+
 # Add specific assemblies
 @HOST_RISCV_TRUE@am__append_2 = \
 @HOST_RISCV_TRUE@	src/init.S \
@@ -336,7 +336,7 @@ firmware_SOURCES = src/firmware.c $(am__append_2)
 # Default flags for compilation of the code
 firmware_CFLAGS = $(AM_CFLAGS) -Wall -Wextra --std=gnu99 \
 	$(am__append_1)
-@HOST_RISCV_TRUE@firmware_CCASFLAGS = $(AM_CFLAGS) -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
+@HOST_RISCV_TRUE@firmware_CCASFLAGS = $(firmware_CFLAGS)
 
 # Only special mapping when cross compiling
 @HOST_RISCV_TRUE@firmware_LDFLAGS = -Wl,-Bstatic,-T,$(top_srcdir)/src/firmware.lds,-Map=firmware.map,--strip-debug,-lgcc
@@ -351,7 +351,7 @@ all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .S .c .o .obj
+.SUFFIXES: .S .asm .c .o .obj
 am--refresh: Makefile
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -952,6 +952,13 @@ uninstall-am: uninstall-binPROGRAMS uninstall-dist_docDATA
 @HOST_RISCV_TRUE@	cat firmware.hex >> firmware.coe
 @HOST_RISCV_TRUE@firmware.asm: firmware
 @HOST_RISCV_TRUE@	$(host_alias)-objdump -drwC -S firmware > firmware.asm
+# This rule allows the creation of the assembly dump of any object file.
+# Specially useful when dealing with C.
+@HOST_RISCV_TRUE@.o.asm:
+@HOST_RISCV_TRUE@	$(host_alias)-objdump -drwC -S $< > $@
+
+# This creates the assembly objdump of all object files!
+@HOST_RISCV_TRUE@assemblies: $(firmware_OBJECTS:.o=.asm)
 
 # Add extra targets to allow default compilation create them
 @HOST_RISCV_TRUE@all-local: firmware.hex firmware.asm
@@ -959,6 +966,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-dist_docDATA
 # Add also cleanup of extra targets
 @HOST_RISCV_TRUE@clean-local:
 @HOST_RISCV_TRUE@	pwd
+@HOST_RISCV_TRUE@	rm -f $(firmware_OBJECTS:.o=.asm)
 @HOST_RISCV_TRUE@	rm -f firmware.bin firmware.hex firmware.coe firmware.asm firmware.map
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

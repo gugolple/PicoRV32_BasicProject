@@ -14,7 +14,7 @@ firmware_CCASFLAGS = $(firmware_CFLAGS)
 
 # Only special mapping when cross compiling
 firmware_LDFLAGS = -Wl,-Bstatic,-T,$(top_srcdir)/src/firmware.lds,-Map=firmware.map,--strip-debug,-lgcc
-#
+
 # Add specific assemblies
 firmware_SOURCES += \
 	src/init.S \
@@ -31,6 +31,13 @@ firmware.coe: firmware.hex
 	cat firmware.hex >> firmware.coe
 firmware.asm: firmware
 	$(host_alias)-objdump -drwC -S firmware > firmware.asm
+# This rule allows the creation of the assembly dump of any object file.
+# Specially useful when dealing with C.
+.o.asm:
+	$(host_alias)-objdump -drwC -S $< > $@
+
+# This creates the assembly objdump of all object files!
+assemblies: $(firmware_OBJECTS:.o=.asm)
 
 # Add extra targets to allow default compilation create them
 all-local: firmware.hex firmware.asm
@@ -38,6 +45,7 @@ all-local: firmware.hex firmware.asm
 # Add also cleanup of extra targets
 clean-local:
 	pwd
+	rm -f $(firmware_OBJECTS:.o=.asm)
 	rm -f firmware.bin firmware.hex firmware.coe firmware.asm firmware.map
 
 else
