@@ -7,16 +7,18 @@ firmware_CFLAGS = $(AM_CFLAGS) -Wall -Wextra --std=gnu99
 
 # If cross compiling, set flags for specific CPU
 if HOST_RISCV
-# Add specific assemblies
-firmware_SOURCES += \
-	src/firmware.S \
-	src/custom_ops.S
 
-# Full specific fflags when cross compiling
+# Full specific flags when cross compiling
 firmware_CFLAGS += -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
+firmware_CCASFLAGS = $(AM_CFLAGS) -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
 
 # Only special mapping when cross compiling
 firmware_LDFLAGS = -Wl,-Bstatic,-T,$(top_srcdir)/src/firmware.lds,-Map=firmware.map,--strip-debug,-lgcc
+#
+# Add specific assemblies
+firmware_SOURCES += \
+	src/init.S \
+	src/custom_ops.S
 
 # Extended binaries only when cross compiling
 firmware.bin: firmware

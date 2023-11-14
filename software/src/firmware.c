@@ -20,7 +20,7 @@ void putc(char c)
 	// Implementation detail of current UART
 	// when reading the 10th bit of the register
 	// gives the BSY status of the OUTPUT going buffer.
-	while(!(*SERIAL_REG & SERIAL_OUT_BSY));
+	while(*SERIAL_REG & SERIAL_OUT_BSY);
 	// When no longer busy, we write to SERIAL.
 	*SERIAL_REG = c;
 }
