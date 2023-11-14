@@ -88,14 +88,11 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = firmware$(EXEEXT)
-
-# If cross compiling, set flags for specific CPU
-
-# Full specific flags when cross compiling
-@HOST_RISCV_TRUE@am__append_1 = -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
+@HOST_RISCV_TRUE@am__append_1 = $(FIRMWARE_FLAGS)
+@HOST_RISCV_TRUE@am__append_2 = $(FIRMWARE_FLAGS)
 
 # Add specific assemblies
-@HOST_RISCV_TRUE@am__append_2 = \
+@HOST_RISCV_TRUE@am__append_3 = \
 @HOST_RISCV_TRUE@	src/init.S \
 @HOST_RISCV_TRUE@	src/custom_ops.S
 
@@ -331,12 +328,17 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-firmware_SOURCES = src/firmware.c $(am__append_2)
+firmware_SOURCES = src/firmware.c $(am__append_3)
 
 # Default flags for compilation of the code
-firmware_CFLAGS = $(AM_CFLAGS) -Wall -Wextra --std=gnu99 \
-	$(am__append_1)
-@HOST_RISCV_TRUE@firmware_CCASFLAGS = $(firmware_CFLAGS)
+DEFAULT_FLAGS = -Wall -Wextra --std=gnu99
+firmware_CFLAGS = $(AM_CFLAGS) $(DEFAULT_FLAGS) $(am__append_1)
+firmware_CCASFLAGS = $(AM_CCASFLAGS) $(DEFAULT_FLAGS) $(am__append_2)
+
+# If cross compiling, set flags for specific CPU
+
+# Full specific flags when cross compiling
+@HOST_RISCV_TRUE@FIRMWARE_FLAGS = -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
 
 # Has to be done with -Wl because it is using the linker through GCC, not
 # calling linker directly
@@ -960,7 +962,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-dist_docDATA
 @HOST_RISCV_TRUE@assemblies: $(firmware_OBJECTS:.o=.asm)
 
 # Add extra targets to allow default compilation create them
-@HOST_RISCV_TRUE@all-local: firmware.hex firmware.asm
+@HOST_RISCV_TRUE@all-local: firmware.hex
 
 # Add also cleanup of extra targets
 @HOST_RISCV_TRUE@clean-local:

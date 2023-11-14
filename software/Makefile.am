@@ -2,15 +2,19 @@ bin_PROGRAMS = firmware
 firmware_SOURCES = \
 	src/firmware.c
 
+
 # Default flags for compilation of the code
-firmware_CFLAGS = $(AM_CFLAGS) -Wall -Wextra --std=gnu99
+DEFAULT_FLAGS = -Wall -Wextra --std=gnu99
+firmware_CFLAGS = $(AM_CFLAGS) $(DEFAULT_FLAGS)
+firmware_CCASFLAGS = $(AM_CCASFLAGS) $(DEFAULT_FLAGS)
 
 # If cross compiling, set flags for specific CPU
 if HOST_RISCV
 
 # Full specific flags when cross compiling
-firmware_CFLAGS += -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
-firmware_CCASFLAGS = $(firmware_CFLAGS)
+FIRMWARE_FLAGS = -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding -nostartfiles -static
+firmware_CFLAGS += $(FIRMWARE_FLAGS)
+firmware_CCASFLAGS += $(FIRMWARE_FLAGS)
 
 # Has to be done with -Wl because it is using the linker through GCC, not
 # calling linker directly
@@ -42,7 +46,7 @@ firmware.asm: firmware
 assemblies: $(firmware_OBJECTS:.o=.asm)
 
 # Add extra targets to allow default compilation create them
-all-local: firmware.hex firmware.asm
+all-local: firmware.hex
 
 # Add also cleanup of extra targets
 clean-local:
