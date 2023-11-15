@@ -80,7 +80,6 @@ module system (
     wire uart_enable;
     wire [31: 0] uart_output;
     wire uart_irq;
-    wire [ 3: 0] uart_debug;
     cpu_uart uart_inst (
         .clk(sys_clk),
         .cpu_clk(clk),
@@ -97,9 +96,7 @@ module system (
         .eoi(eoi[`IRQ_UART]),
     // Uart specifics
         .uart_in(uart_in),
-        .uart_out(uart_out),
-    // Temporary debug
-        .debug(uart_debug)
+        .uart_out(uart_out)
     );
     assign irq[`IRQ_UART] = uart_irq;
     
@@ -144,5 +141,5 @@ module system (
     // The latch is handled at the different sources.
     assign mem_rdata = mem_la_rdata_ram | uart_output;
     
-    assign led_vect = {2'b0, uart_enable || mem_la_write, uart_debug};
+    assign led_vect = {out_byte[6:0]};
 endmodule

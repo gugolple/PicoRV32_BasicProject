@@ -14,9 +14,7 @@ module cpu_uart (
     input                 eoi,
     // Uart specifics
     input                 uart_in,
-    output                uart_out,
-    // Debug vector
-    output     [ 3: 0]    debug
+    output                uart_out
 );
     // INTO THE UART, SO OUT FOR US
     reg [7:0] dout_uart;
@@ -75,8 +73,6 @@ module cpu_uart (
         dout_rdy_dly <= dout_rdy;
         mem_write_dly <= mem_write;
     end
-    
-    assign debug = {enable, mem_write, dout_vld, dout_rdy};
   
     // The following block manages the reception of a single transmission of the
     // UART module
