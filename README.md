@@ -62,6 +62,6 @@ All the specifics regarding the board [cmod S7](https://digilent.com/reference/p
 # Links
 - Picorv32: https://github.com/YosysHQ/picorv32
 - Cmod S7: https://digilent.com/reference/programmable-logic/cmod-s7/start
-- RISC-V GNU Compiler Toolchain: https://github.com/riscv-collab/riscv-gnu-- toolchain
+- RISC-V GNU Compiler Toolchain: https://github.com/riscv-collab/riscv-gnu-toolchain
 - Verilog formatter: https://github.com/chipsalliance/verible
 - Serial for FPGA: https://github.com/jakubcabal/uart-for-fpga.git
