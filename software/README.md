@@ -30,7 +30,7 @@ The following are core files for the system to work:
 
 The following outputs are utilized for the image building process:
 - firmware.bin: The bin file containing all the instructions starting at
-        0x0000000000000000 without any other discrimination being done.
+        0x0000_0000 without any other discrimination being done.
   - This file must be present at "synthesis" time for the "Vivado" utilities to 
   	load the file into the memories.
 
