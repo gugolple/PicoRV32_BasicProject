@@ -16,10 +16,11 @@ Default setup of AUTOTOOLS commands are as follows:
 ```
 
 The following are core files for the system to work:
-- firmware.S: Contains all the low level assembly setting the processor
+- init.S: Contains all the low level assembly setting the processor
         configuration for the execution.
   - This will need two entry points defined
         in the "C" sources: "main" and "irq".
+- custom_ops.S: Defines all specific instructions for PicoRV32.
 
 - firmware.c: Contains all the "C" level code for the utilization of the
         system. 
