@@ -12,7 +12,7 @@ uint32_t const SERIAL_IN_DATA = 0x0FF;
 
 #define BUFFER_SIZE 100
 static char serial_buffer[BUFFER_SIZE];
-static uint32_t serial_buffer_idx;
+static volatile uint32_t serial_buffer_idx;
 
 void putc(char c)
 {
@@ -20,7 +20,7 @@ void putc(char c)
 	// Implementation detail of current UART
 	// when reading the 10th bit of the register
 	// gives the BSY status of the OUTPUT going buffer.
-	while(*SERIAL_REG & SERIAL_OUT_BSY);
+	while(!(*SERIAL_REG & SERIAL_OUT_BSY));
 	// When no longer busy, we write to SERIAL.
 	*SERIAL_REG = c;
 }
@@ -74,7 +74,7 @@ void main()
 {
 	char message[] = "$Uryyb+Jbeyq!+Vs+lbh+pna+ernq+guvf+zrffntr+gura$gur+CvpbEI32+PCH"
 			"+frrzf+gb+or+jbexvat+whfg+svar.$$++++++++++++++++GRFG+CNFFRQ!$$";
-	puts("\r\n");
+	puts("\r\nInitiated RV32!\r\n");
 	for (int i = 0; message[i]; i++)
 		switch (message[i])
 		{
