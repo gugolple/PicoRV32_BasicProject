@@ -32,7 +32,8 @@ I want the soft core to be programmed via C/C++ and the FOSS toolchain.
 
 Have the picorv32 communicate via SERIAL/UART to the computer as to allow basic communication/debug.
 - Currently is only sending data from PicoRV32 to the outside system.
-- This is now working bidirectional with the example code of the PicoRV32 project. TAG: "WorkingSerial".
+- This is now working bidirectional with the example code of the PicoRV32 project. 
+  - TAG: "WorkingSerial".
 
 Have the picorv32 communicate via SERIAL/UART and handle the reception via IRQ.
 - The code is a bit bulkier, there is a buffer in the UART of 8 words deep,
@@ -47,10 +48,11 @@ Migration to autotools for software compilation done!
   - The core has been solved, allowing anyone take the files and just change
     their source code specific needs. It has all the configuration and files
     needed for this project linked.
-  - TAG: "WorkingAutotools"
+    - TAG: "WorkingAutotools"
 
 Produce a better system for understanding the status of the serial by the CPU.
-- This has been accomplished, it was already given by DIN_RDY if it was kept high. TAG: "WorkingSerialWait".
+- This has been accomplished, it was already given by DIN_RDY if it was kept high. 
+  - TAG: "WorkingSerialWait".
 
 # Aknowledgments
 Absolutely to the [picorv32](https://github.com/YosysHQ/picorv32) proyect, from which the main code is based on.
