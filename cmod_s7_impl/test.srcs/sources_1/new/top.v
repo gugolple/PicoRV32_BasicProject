@@ -41,8 +41,12 @@ endmodule
 
 module top (
     input clk,
-    input [1:0] btn,
-    output [3:0] led,
+    input btn0,
+    input btn1,
+    output led0,
+    output led1,
+    output led2,
+    output led3, 
     input uart_rx,
     output uart_tx,
     output led0_b,
@@ -68,7 +72,7 @@ module top (
     system m_system (
         .sys_clk(clk),
         .clk(clock_out),
-        .resetn(!btn[0]),
+        .resetn(!btn0),
         .out_byte(myreg),
         .out_byte_en(out_en),
         .external_read(external_read),
@@ -79,10 +83,10 @@ module top (
         .led_vect(led_vect)
     );
     
-    assign led[3:0] = led_vect[3:0];
+    assign {led3,led2,led1,led0} = led_vect[3:0];
     
     // Just turn off leds
     assign led0_b = !led_vect[4];
     assign led0_g = !led_vect[5];
-    assign led0_r = !led_vect[5];
+    assign led0_r = !led_vect[6];
 endmodule

@@ -14,7 +14,9 @@ module cpu_uart (
     input                 eoi,
     // Uart specifics
     input                 uart_in,
-    output                uart_out
+    output                uart_out,
+    // Debug vector
+    output     [ 3: 0]    debug
 );
     // INTO THE UART, SO OUT FOR US
     reg [7:0] dout_uart;
@@ -43,13 +45,14 @@ module cpu_uart (
         .DOUT(din_uart),
         .DOUT_VLD(din_vld)
     );
-
     
     // The following block manages to do a single transmission of the UART
     // module
     //Rising edge detector stores
     reg dout_rdy_dly;
+    reg mem_write_dly;
     // Rising edge detector logic
+    wire mem_write_pos = mem_write && !mem_write_dly;
     wire dout_rdy_neg = !dout_rdy && dout_rdy_dly;
     // Single triggering of UART communication logic.
     always @(posedge clk) begin
@@ -57,7 +60,7 @@ module cpu_uart (
         if (reset) begin
             dout_vld <= 0;
         // When CPU wants to transmit, we set dout_vld to start a transmission.
-        end else if (enable && mem_write && mem_wstrb[0] && dout_rdy) begin
+        end else if (enable && mem_write_pos && !dout_vld) begin
             dout_uart[ 7: 0] <= mem_wdata[ 7: 0];
             // Signal UART that data is valid
             dout_vld <= 1;
@@ -70,7 +73,10 @@ module cpu_uart (
         end
         // Rising edge detector delayers  
         dout_rdy_dly <= dout_rdy;
+        mem_write_dly <= mem_write;
     end
+    
+    assign debug = {enable, mem_write, dout_vld, dout_rdy};
   
     // The following block manages the reception of a single transmission of the
     // UART module
@@ -117,7 +123,7 @@ module cpu_uart (
 
     // Accommodate the CPU READ
     reg [31: 0] rdata;
-    always @(enable) begin
+    always @(posedge clk) begin
         // If it is our turn, write the buffered data
         if (enable) begin
             rdata[ 7: 0] <= din_uart_reg[ 7: 0];

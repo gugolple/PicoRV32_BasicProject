@@ -77,9 +77,10 @@ module system (
 
 
     // Uart module!
-    reg uart_enable;
+    wire uart_enable;
     wire [31: 0] uart_output;
     wire uart_irq;
+    wire [ 3: 0] uart_debug;
     cpu_uart uart_inst (
         .clk(sys_clk),
         .cpu_clk(clk),
@@ -96,7 +97,9 @@ module system (
         .eoi(eoi[`IRQ_UART]),
     // Uart specifics
         .uart_in(uart_in),
-        .uart_out(uart_out)
+        .uart_out(uart_out),
+    // Temporary debug
+        .debug(uart_debug)
     );
     assign irq[`IRQ_UART] = uart_irq;
     
@@ -128,23 +131,18 @@ module system (
             end else begin
                 out_byte_en_io <= 0;
             end
-            // UART REG!
-            if (mem_la_addr == 32'h1000_0004) begin
-                // Activate external read flag
-                // UART OUT!
-                uart_enable <= 1;
-            end else begin
-                uart_enable <= 0;
-            end
             // Concentrate OUT_BYTE_EN
             out_byte_en <= out_byte_en_io;
         end
     end endgenerate
+    
+    // UART REG!
+    assign uart_enable = mem_la_addr == 32'h1000_0004;
   
     
     // This is a wire to remove 1 latch in the transmission.
     // The latch is handled at the different sources.
     assign mem_rdata = mem_la_rdata_ram | uart_output;
     
-    assign led_vect = {{3{uart_enable}} | mem_la_wdata[2:0], uart_enable || mem_la_write, uart_enable, eoi[`IRQ_UART], trap};
+    assign led_vect = {2'b0, uart_enable || mem_la_write, uart_debug};
 endmodule
