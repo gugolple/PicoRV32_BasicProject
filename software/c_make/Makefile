@@ -3,9 +3,16 @@ CC_FLAGS = -Wall -Wextra -march=rv32i -mabi=ilp32 -mstrict-align -ffreestanding 
 
 default: firmware.hex
 
-firmware.elf: init.S firmware.c firmware.lds custom_ops.S
-	$(TOOLCHAIN_PREFIX)gcc $(CC_FLAGS) -o firmware.elf init.S custom_ops.S firmware.c \
-		 -Wl,-Bstatic,-T,firmware.lds,-Map,firmware.map,--strip-debug -lgcc
+FIRMWARE_PATH:=../firmware
+SOURCE_PATH:=../c_autotools/src
+
+firmware.elf: $(SOURCE_PATH)/firmware.c $(SOURCE_PATH)/firmware.lds $(FIRMWARE_PATH)/init.S $(FIRMWARE_PATH)/custom_ops.S
+	$(TOOLCHAIN_PREFIX)gcc $(CC_FLAGS) -o \
+		firmware.elf \
+		$(FIRMWARE_PATH)/init.S \
+		$(FIRMWARE_PATH)/custom_ops.S \
+		$(SOURCE_PATH)/firmware.c \
+		-Wl,-Bstatic,-T,$(SOURCE_PATH)/firmware.lds,-Map,firmware.map,--strip-debug -lgcc
 
 firmware.bin: firmware.elf
 	$(TOOLCHAIN_PREFIX)objcopy -O binary firmware.elf firmware.bin

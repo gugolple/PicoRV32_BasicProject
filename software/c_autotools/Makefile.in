@@ -93,8 +93,8 @@ bin_PROGRAMS = firmware$(EXEEXT)
 
 # Add specific assemblies
 @HOST_RISCV_TRUE@am__append_3 = \
-@HOST_RISCV_TRUE@	src/init.S \
-@HOST_RISCV_TRUE@	src/custom_ops.S
+@HOST_RISCV_TRUE@	../firmware/init.S \
+@HOST_RISCV_TRUE@	../firmware/custom_ops.S
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -111,10 +111,11 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(docdir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__firmware_SOURCES_DIST = src/firmware.c src/init.S src/custom_ops.S
+am__firmware_SOURCES_DIST = src/firmware.c ../firmware/init.S \
+	../firmware/custom_ops.S
 am__dirstamp = $(am__leading_dot)dirstamp
-@HOST_RISCV_TRUE@am__objects_1 = src/firmware-init.$(OBJEXT) \
-@HOST_RISCV_TRUE@	src/firmware-custom_ops.$(OBJEXT)
+@HOST_RISCV_TRUE@am__objects_1 = ../firmware/firmware-init.$(OBJEXT) \
+@HOST_RISCV_TRUE@	../firmware/firmware-custom_ops.$(OBJEXT)
 am_firmware_OBJECTS = src/firmware-firmware.$(OBJEXT) $(am__objects_1)
 firmware_OBJECTS = $(am_firmware_OBJECTS)
 firmware_LDADD = $(LDADD)
@@ -135,9 +136,9 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = src/$(DEPDIR)/firmware-custom_ops.Po \
-	src/$(DEPDIR)/firmware-firmware.Po \
-	src/$(DEPDIR)/firmware-init.Po
+am__depfiles_remade = ../firmware/$(DEPDIR)/firmware-custom_ops.Po \
+	../firmware/$(DEPDIR)/firmware-init.Po \
+	src/$(DEPDIR)/firmware-firmware.Po
 am__mv = mv -f
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -451,10 +452,17 @@ src/$(DEPDIR)/$(am__dirstamp):
 	@: > src/$(DEPDIR)/$(am__dirstamp)
 src/firmware-firmware.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
-src/firmware-init.$(OBJEXT): src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-src/firmware-custom_ops.$(OBJEXT): src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
+../firmware/$(am__dirstamp):
+	@$(MKDIR_P) ../firmware
+	@: > ../firmware/$(am__dirstamp)
+../firmware/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) ../firmware/$(DEPDIR)
+	@: > ../firmware/$(DEPDIR)/$(am__dirstamp)
+../firmware/firmware-init.$(OBJEXT): ../firmware/$(am__dirstamp) \
+	../firmware/$(DEPDIR)/$(am__dirstamp)
+../firmware/firmware-custom_ops.$(OBJEXT):  \
+	../firmware/$(am__dirstamp) \
+	../firmware/$(DEPDIR)/$(am__dirstamp)
 
 firmware$(EXEEXT): $(firmware_OBJECTS) $(firmware_DEPENDENCIES) $(EXTRA_firmware_DEPENDENCIES) 
 	@rm -f firmware$(EXEEXT)
@@ -462,14 +470,15 @@ firmware$(EXEEXT): $(firmware_OBJECTS) $(firmware_DEPENDENCIES) $(EXTRA_firmware
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f ../firmware/*.$(OBJEXT)
 	-rm -f src/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/firmware-custom_ops.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../firmware/$(DEPDIR)/firmware-custom_ops.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../firmware/$(DEPDIR)/firmware-init.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/firmware-firmware.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/firmware-init.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -493,33 +502,33 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CPPASCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-src/firmware-init.o: src/init.S
-@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT src/firmware-init.o -MD -MP -MF src/$(DEPDIR)/firmware-init.Tpo -c -o src/firmware-init.o `test -f 'src/init.S' || echo '$(srcdir)/'`src/init.S
-@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/firmware-init.Tpo src/$(DEPDIR)/firmware-init.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='src/init.S' object='src/firmware-init.o' libtool=no @AMDEPBACKSLASH@
+../firmware/firmware-init.o: ../firmware/init.S
+@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT ../firmware/firmware-init.o -MD -MP -MF ../firmware/$(DEPDIR)/firmware-init.Tpo -c -o ../firmware/firmware-init.o `test -f '../firmware/init.S' || echo '$(srcdir)/'`../firmware/init.S
+@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) ../firmware/$(DEPDIR)/firmware-init.Tpo ../firmware/$(DEPDIR)/firmware-init.Po
+@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='../firmware/init.S' object='../firmware/firmware-init.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o src/firmware-init.o `test -f 'src/init.S' || echo '$(srcdir)/'`src/init.S
+@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o ../firmware/firmware-init.o `test -f '../firmware/init.S' || echo '$(srcdir)/'`../firmware/init.S
 
-src/firmware-init.obj: src/init.S
-@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT src/firmware-init.obj -MD -MP -MF src/$(DEPDIR)/firmware-init.Tpo -c -o src/firmware-init.obj `if test -f 'src/init.S'; then $(CYGPATH_W) 'src/init.S'; else $(CYGPATH_W) '$(srcdir)/src/init.S'; fi`
-@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/firmware-init.Tpo src/$(DEPDIR)/firmware-init.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='src/init.S' object='src/firmware-init.obj' libtool=no @AMDEPBACKSLASH@
+../firmware/firmware-init.obj: ../firmware/init.S
+@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT ../firmware/firmware-init.obj -MD -MP -MF ../firmware/$(DEPDIR)/firmware-init.Tpo -c -o ../firmware/firmware-init.obj `if test -f '../firmware/init.S'; then $(CYGPATH_W) '../firmware/init.S'; else $(CYGPATH_W) '$(srcdir)/../firmware/init.S'; fi`
+@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) ../firmware/$(DEPDIR)/firmware-init.Tpo ../firmware/$(DEPDIR)/firmware-init.Po
+@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='../firmware/init.S' object='../firmware/firmware-init.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o src/firmware-init.obj `if test -f 'src/init.S'; then $(CYGPATH_W) 'src/init.S'; else $(CYGPATH_W) '$(srcdir)/src/init.S'; fi`
+@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o ../firmware/firmware-init.obj `if test -f '../firmware/init.S'; then $(CYGPATH_W) '../firmware/init.S'; else $(CYGPATH_W) '$(srcdir)/../firmware/init.S'; fi`
 
-src/firmware-custom_ops.o: src/custom_ops.S
-@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT src/firmware-custom_ops.o -MD -MP -MF src/$(DEPDIR)/firmware-custom_ops.Tpo -c -o src/firmware-custom_ops.o `test -f 'src/custom_ops.S' || echo '$(srcdir)/'`src/custom_ops.S
-@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/firmware-custom_ops.Tpo src/$(DEPDIR)/firmware-custom_ops.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='src/custom_ops.S' object='src/firmware-custom_ops.o' libtool=no @AMDEPBACKSLASH@
+../firmware/firmware-custom_ops.o: ../firmware/custom_ops.S
+@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT ../firmware/firmware-custom_ops.o -MD -MP -MF ../firmware/$(DEPDIR)/firmware-custom_ops.Tpo -c -o ../firmware/firmware-custom_ops.o `test -f '../firmware/custom_ops.S' || echo '$(srcdir)/'`../firmware/custom_ops.S
+@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) ../firmware/$(DEPDIR)/firmware-custom_ops.Tpo ../firmware/$(DEPDIR)/firmware-custom_ops.Po
+@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='../firmware/custom_ops.S' object='../firmware/firmware-custom_ops.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o src/firmware-custom_ops.o `test -f 'src/custom_ops.S' || echo '$(srcdir)/'`src/custom_ops.S
+@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o ../firmware/firmware-custom_ops.o `test -f '../firmware/custom_ops.S' || echo '$(srcdir)/'`../firmware/custom_ops.S
 
-src/firmware-custom_ops.obj: src/custom_ops.S
-@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT src/firmware-custom_ops.obj -MD -MP -MF src/$(DEPDIR)/firmware-custom_ops.Tpo -c -o src/firmware-custom_ops.obj `if test -f 'src/custom_ops.S'; then $(CYGPATH_W) 'src/custom_ops.S'; else $(CYGPATH_W) '$(srcdir)/src/custom_ops.S'; fi`
-@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/firmware-custom_ops.Tpo src/$(DEPDIR)/firmware-custom_ops.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='src/custom_ops.S' object='src/firmware-custom_ops.obj' libtool=no @AMDEPBACKSLASH@
+../firmware/firmware-custom_ops.obj: ../firmware/custom_ops.S
+@am__fastdepCCAS_TRUE@	$(AM_V_CPPAS)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -MT ../firmware/firmware-custom_ops.obj -MD -MP -MF ../firmware/$(DEPDIR)/firmware-custom_ops.Tpo -c -o ../firmware/firmware-custom_ops.obj `if test -f '../firmware/custom_ops.S'; then $(CYGPATH_W) '../firmware/custom_ops.S'; else $(CYGPATH_W) '$(srcdir)/../firmware/custom_ops.S'; fi`
+@am__fastdepCCAS_TRUE@	$(AM_V_at)$(am__mv) ../firmware/$(DEPDIR)/firmware-custom_ops.Tpo ../firmware/$(DEPDIR)/firmware-custom_ops.Po
+@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS)source='../firmware/custom_ops.S' object='../firmware/firmware-custom_ops.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o src/firmware-custom_ops.obj `if test -f 'src/custom_ops.S'; then $(CYGPATH_W) 'src/custom_ops.S'; else $(CYGPATH_W) '$(srcdir)/src/custom_ops.S'; fi`
+@am__fastdepCCAS_FALSE@	$(AM_V_CPPAS@am__nodep@)$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(firmware_CCASFLAGS) $(CCASFLAGS) -c -o ../firmware/firmware-custom_ops.obj `if test -f '../firmware/custom_ops.S'; then $(CYGPATH_W) '../firmware/custom_ops.S'; else $(CYGPATH_W) '$(srcdir)/../firmware/custom_ops.S'; fi`
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -836,6 +845,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f ../firmware/$(DEPDIR)/$(am__dirstamp)
+	-rm -f ../firmware/$(am__dirstamp)
 	-rm -f src/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/$(am__dirstamp)
 
@@ -849,9 +860,9 @@ clean-am: clean-binPROGRAMS clean-generic clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f src/$(DEPDIR)/firmware-custom_ops.Po
+		-rm -f ../firmware/$(DEPDIR)/firmware-custom_ops.Po
+	-rm -f ../firmware/$(DEPDIR)/firmware-init.Po
 	-rm -f src/$(DEPDIR)/firmware-firmware.Po
-	-rm -f src/$(DEPDIR)/firmware-init.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-tags
@@ -899,9 +910,9 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f src/$(DEPDIR)/firmware-custom_ops.Po
+		-rm -f ../firmware/$(DEPDIR)/firmware-custom_ops.Po
+	-rm -f ../firmware/$(DEPDIR)/firmware-init.Po
 	-rm -f src/$(DEPDIR)/firmware-firmware.Po
-	-rm -f src/$(DEPDIR)/firmware-init.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

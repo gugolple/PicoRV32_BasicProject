@@ -23,8 +23,8 @@ firmware_LDFLAGS = -Wl,-Bstatic,-T,$(top_srcdir)/src/firmware.lds,-Map=firmware.
 
 # Add specific assemblies
 firmware_SOURCES += \
-	src/init.S \
-	src/custom_ops.S
+	../firmware/init.S \
+	../firmware/custom_ops.S
 
 # Extended binaries only when cross compiling
 firmware.bin: firmware
